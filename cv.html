@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>CV — Surendra Kumar Chandrasekaran</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.4/css/academicons.min.css"/>
+  <style>
+    .cv-layout { max-width: 900px; margin: 0 auto; padding: 80px 2rem 5rem; }
+
+    .cv-header {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap; gap: 1rem;
+    }
+
+    .cv-header h1 { font-size: 1.3rem; font-weight: 500; color: var(--heading); }
+    .cv-header p { font-size: .85rem; color: var(--muted); margin-top: .2rem; }
+
+    .cv-actions { display: flex; gap: .6rem; flex-wrap: wrap; }
+
+    .cv-btn {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .8rem; font-weight: 500;
+      padding: .4rem .9rem;
+      border-radius: 5px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      text-decoration: none;
+      transition: all .2s ease;
+      cursor: pointer;
+    }
+    .cv-btn:hover { border-color: var(--link); color: var(--link); background: rgba(0,123,255,.05); text-decoration: none; }
+    .cv-btn.primary { background: var(--link); color: white; border-color: var(--link); }
+    .cv-btn.primary:hover { background: var(--link-hover); border-color: var(--link-hover); color: white; }
+
+    .pdf-container {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--surface2);
+    }
+
+    .pdf-container iframe {
+      width: 100%;
+      height: 85vh;
+      border: none;
+      display: block;
+    }
+
+    .pdf-fallback {
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    .pdf-fallback i { font-size: 3rem; color: var(--faint); margin-bottom: 1rem; display: block; }
+    .pdf-fallback p { font-size: .9rem; color: var(--muted); margin-bottom: 1.25rem; }
+
+    .cv-note {
+      font-size: .8rem; color: var(--muted);
+      margin-top: .75rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="navbar-brand">Surendra Kumar Chandrasekaran</a>
+  <ul class="navbar-nav">
+    <li><a href="index.html">about</a></li>
+    <li><a href="blog.html">blog</a></li>
+    <li><a href="index.html#publications">publications</a></li>
+    <li><a href="index.html#projects">projects</a></li>
+    <li><a href="cv.html" class="active">cv</a></li>
+  </ul>
+  <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+    <i class="fa fa-moon"></i>
+  </button>
+</nav>
+
+<div class="cv-layout">
+
+  <div class="cv-header">
+    <div>
+      <h1>Curriculum Vitae</h1>
+      <p>Surendra Kumar Chandrasekaran · schandr3@umd.edu</p>
+    </div>
+    <div class="cv-actions">
+      <a href="surendra_cv.pdf" download class="cv-btn primary">
+        <i class="fa fa-download"></i> Download PDF
+      </a>
+      <a href="surendra_cv.pdf" target="_blank" class="cv-btn">
+        <i class="fa fa-external-link-alt"></i> Open in new tab
+      </a>
+    </div>
+  </div>
+
+  <div class="pdf-container">
+    <!-- PDF embed — replace src with your actual CV path -->
+    <iframe
+      src="surendra_cv.pdf"
+      title="Surendra Kumar Chandrasekaran — CV"
+      id="cvFrame">
+    </iframe>
+
+    <!-- Fallback if PDF doesn't load -->
+    <div class="pdf-fallback" id="cvFallback" style="display:none;">
+      <i class="fa fa-file-pdf"></i>
+      <p>PDF preview not available in your browser.</p>
+      <a href="surendra_cv.pdf" download class="cv-btn primary">
+        <i class="fa fa-download"></i> Download CV
+      </a>
+    </div>
+  </div>
+
+  <p class="cv-note">
+    Can't see the PDF?
+    <a href="surendra_cv.pdf" download>Download it directly</a>.
+    Last updated March 2026.
+  </p>
+
+  <footer class="page-footer" style="margin-top:2.5rem;">
+    <p>© 2026 Surendra Kumar Chandrasekaran · <a href="index.html">home</a> · <a href="blog.html">blog</a></p>
+  </footer>
+
+</div>
+
+<script>
+  /* theme */
+  const btn = document.getElementById('themeToggle');
+  const html = document.documentElement;
+  const icon = btn.querySelector('i');
+  const saved = localStorage.getItem('theme') || 'light';
+  html.setAttribute('data-theme', saved);
+  icon.className = saved === 'dark' ? 'fa fa-sun' : 'fa fa-moon';
+  btn.addEventListener('click', () => {
+    const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    html.setAttribute('data-theme', next);
+    icon.className = next === 'dark' ? 'fa fa-sun' : 'fa fa-moon';
+    localStorage.setItem('theme', next);
+  });
+
+  /* show fallback if iframe fails */
+  const frame = document.getElementById('cvFrame');
+  const fallback = document.getElementById('cvFallback');
+  frame.addEventListener('error', () => {
+    frame.style.display = 'none';
+    fallback.style.display = 'block';
+  });
+</script>
+</body>
+</html>

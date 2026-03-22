@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Surendra Kumar Chandrasekaran</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <!-- Font Awesome for social icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <!-- Academicons for Scholar/ORCID -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.4/css/academicons.min.css"/>
+</head>
+<body>
+
+<!-- ════════════ NAVBAR ════════════ -->
+<nav class="navbar">
+  <a href="#" class="navbar-brand">Surendra Kumar Chandrasekaran</a>
+  <ul class="navbar-nav">
+    <li><a href="#about" class="active">about</a></li>
+    <li><a href="#news">news</a></li>
+    <li><a href="#publications">publications</a></li>
+    <li><a href="#projects">projects</a></li>
+    <li><a href="#experience">experience</a></li>
+    <li><a href="#education">education</a></li>
+    <li><a href="blog.html">blog</a></li>
+    <li><a href="cv.html">cv</a></li>
+  </ul>
+  <div class="nav-search">
+    <i class="fa fa-search" style="font-size:.7rem;"></i>
+    <span style="font-size:.72rem;">ctrl k</span>
+  </div>
+  <button class="theme-toggle" id="themeToggle" title="Toggle dark/light mode">
+    <i class="fa fa-moon"></i>
+  </button>
+</nav>
+
+<!-- ════════════ LAYOUT ════════════ -->
+<div class="layout">
+
+  <!-- ════════ SIDEBAR ════════ -->
+  <aside class="sidebar">
+
+    <div class="profile-photo-wrap">
+      <div class="profile-photo">
+        <!-- Replace src with your actual photo path -->
+        <img src="photo1.jpg"
+             alt="Surendra Kumar Chandrasekaran"
+             onerror="this.style.display='none';this.parentNode.innerHTML='<span style=\'font-size:3rem;\'>👤</span>'"/>
+      </div>
+    </div>
+
+    <div class="profile-name">Surendra Kumar Chandrasekaran</div>
+
+    <div class="profile-title">
+      <br>CLIP Lab · University of Maryland<br>
+      MS Applied Machine Learning
+    </div>
+
+    <div class="profile-info">
+      <p>
+        <a href="https://wiki.umiacs.umd.edu/clip/" target="_blank">CLIP Lab, UMIACS</a>
+      </p>
+      <p>University of Maryland</p>
+      <p>College Park, MD 20740</p>
+    </div>
+
+    <div class="social-icons">
+      <a href="mailto:schandr3@umd.edu" class="social-icon" title="Email">
+        <i class="fas fa-envelope"></i>
+      </a>
+      <a href="https://scholar.google.com/citations?view_op=new_articles&hl=en&imq=Surendra+Kumar+Chandrasekaran#" target="_blank" class="social-icon" title="Google Scholar">
+        <i class="ai ai-google-scholar"></i>
+      </a>
+      <a href="https://github.com/c-surendra-kumar" target="_blank" class="social-icon" title="GitHub">
+        <i class="fab fa-github"></i>
+      </a>
+      <a href="https://linkedin.com/in/surendra-kumar-c" target="_blank" class="social-icon" title="LinkedIn">
+        <i class="fab fa-linkedin"></i>
+      </a>
+      <a href="cv.html" class="social-icon" title="CV">
+        <i class="ai ai-cv"></i>
+      </a>
+    </div>
+
+    <p style="font-size:.75rem;color:var(--muted);text-align:center;line-height:1.5;margin-bottom:1.5rem;">
+      Open to Internships · Summer 2025
+    </p>
+
+    <div style="border-top:1px solid var(--border);padding-top:1.25rem;">
+      <div style="font-size:.72rem;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem;">Interests</div>
+      <div style="display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1.25rem;">
+        <span style="font-size:.72rem;background:var(--tag-bg);color:var(--tag-text);padding:.15rem .5rem;border-radius:3px;">NLP</span>
+        <span style="font-size:.72rem;background:var(--tag-bg);color:var(--tag-text);padding:.15rem .5rem;border-radius:3px;">Agentic AI</span>
+        <span style="font-size:.72rem;background:var(--tag-bg);color:var(--tag-text);padding:.15rem .5rem;border-radius:3px;">RAG</span>
+        <span style="font-size:.72rem;background:var(--tag-bg);color:var(--tag-text);padding:.15rem .5rem;border-radius:3px;">LLMs</span>
+        <span style="font-size:.72rem;background:var(--tag-bg);color:var(--tag-text);padding:.15rem .5rem;border-radius:3px;">Multimodal ML</span>
+        <span style="font-size:.72rem;background:var(--tag-bg);color:var(--tag-text);padding:.15rem .5rem;border-radius:3px;">Political NLP</span>
+      </div>
+
+      <div style="font-size:.72rem;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem;">Tools</div>
+      <div style="display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1.25rem;">
+        <span style="font-size:.72rem;background:var(--tag-bg);color:var(--tag-text);padding:.15rem .5rem;border-radius:3px;">PyTorch</span>
+        <span style="font-size:.72rem;background:var(--tag-bg);color:var(--tag-text);padding:.15rem .5rem;border-radius:3px;">HuggingFace</span>
+        <span style="font-size:.72rem;background:var(--tag-bg);color:var(--tag-text);padding:.15rem .5rem;border-radius:3px;">LangChain</span>
+        <span style="font-size:.72rem;background:var(--tag-bg);color:var(--tag-text);padding:.15rem .5rem;border-radius:3px;">FAISS</span>
+        <span style="font-size:.72rem;background:var(--tag-bg);color:var(--tag-text);padding:.15rem .5rem;border-radius:3px;">AWS</span>
+        <span style="font-size:.72rem;background:var(--tag-bg);color:var(--tag-text);padding:.15rem .5rem;border-radius:3px;">Docker</span>
+        <span style="font-size:.72rem;background:var(--tag-bg);color:var(--tag-text);padding:.15rem .5rem;border-radius:3px;">FastAPI</span>
+      </div>
+
+  </aside>
+
+  <!-- ════════ MAIN ════════ -->
+  <main class="main-content">
+
+    <!-- ── BIO ── -->
+    <section id="about" class="page-section">
+      <div class="bio-text">
+        <p>
+          I am a first-year M.S. student in Applied Machine Learning at the
+          <a href="https://umd.edu" target="_blank">University of Maryland, College Park</a> (GPA: 4.0/4.0),
+          where I work as a Graduate Research Assistant at the
+          <a href="https://wiki.umiacs.umd.edu/clip/" target="_blank">CLIP Lab</a>
+          under <a href="https://juliamendelsohn.github.io/">Prof. Mendelsohn</a>.
+          My research focuses on <strong>political discourse analysis</strong> — specifically, building
+          NLP pipelines to detect dogwhistles.
+        </p>
+        <p>
+          Prior to UMD, I served as a Founding Engineer at
+          <a href="https://www.eyezenx.ai/" target="_blank">EyeZenX Analytics</a>,
+          where I designed a multimodal medical imaging pipeline (EfficientNet B4 + U-Net) that
+          improved diagnostic success rates by 25%, with a stakeholder patent held on the core architecture.
+          I also worked as a Machine Learning Intern at
+          <a href="https://www.kaartech.com/" target="_blank">Kaar Technologies</a>,
+          building production RAG systems that reduced query latency by 35% and automated
+          recruitment workflows using Gemini Pro.
+        </p>
+        <p>
+          My broader interests lie in <strong>Agentic AI systems</strong>, multimodal machine learning,
+          and applied NLP. I am actively seeking <strong>research internships for Summer 2025</strong>
+          in NLP, agentic AI, or applied machine learning.
+          Feel free to reach out via <a href="mailto:schandr3@umd.edu">email</a> or connect on
+          <a href="https://linkedin.com/in/surendra-kumar-c" target="_blank">LinkedIn</a>.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── NEWS ── -->
+    <section id="news" class="page-section">
+      <div class="section-title">
+        <span>news</span>
+        <a href="#">more &rarr;</a>
+      </div>
+      <table class="news-table">
+        <tr>
+          <td class="date-col">Nov 15, 2025</td>
+          <td>🏆 Won <strong>1st place</strong> at Gemini Hack Night (150+ participants) — built AR-based CPR assistance app in 5 hours using Google MediaPipe + Gemini Pro. 92% accuracy, 180ms inference.</td>
+        </tr>
+        <tr>
+          <td class="date-col">Oct 2025</td>
+          <td>📄 Paper accepted at <strong>MIDAS 2025, Springer</strong> — <em>A Comparative Analysis of Transformer Models for Abstractive Summarization of Indian Legal Judgments.</em></td>
+        </tr>
+        <tr>
+          <td class="date-col">Sep 2025</td>
+          <td>🔬 Joined <strong>CLIP Lab, UMD</strong> as a Graduate Research Assistant under Prof. Mendelsohn, working on dogwhistle detection in political podcast transcripts.</td>
+        </tr>
+        <tr>
+          <td class="date-col">Sep 2025</td>
+          <td>🎓 Started M.S. in Applied Machine Learning at <strong>University of Maryland, College Park</strong>.</td>
+        </tr>
+      </table>
+    </section>
+
+    <!-- ── SELECTED PUBLICATIONS ── -->
+    <section id="publications" class="page-section">
+      <div class="section-title">
+        <span>selected publications</span>
+        <a href="#">all publications &rarr;</a>
+      </div>
+      <div class="pub-list">
+
+        <div class="pub-item">
+          <div class="pub-number">1.</div>
+          <div class="pub-body">
+            <div>
+              <a href="#" class="pub-journal-badge">MIDAS 2025</a>
+            </div>
+            <div class="pub-title">
+              A Comparative Analysis of Transformer Models for Abstractive Summarization of Indian Legal Judgments
+            </div>
+            <div class="pub-authors">
+              <em class="self">Surendra Kumar Chandrasekaran</em>
+            </div>
+            <div class="pub-venue">
+              1st International Conference on Machine Intelligence and Data Science (MIDAS 2025), Springer, Paralakhemundi, Odisha, India.
+            </div>
+            <div class="pub-links">
+              <a href="#" class="pub-link">Abs</a>
+              <a href="#" class="pub-link">PDF</a>
+              <a href="#" class="pub-link">Cite</a>
+            </div>
+            <div class="pub-abstract">
+              A comparative study of transformer-based architectures for abstractive summarization of long-form Indian legal judgments,
+              evaluating models on domain-specific benchmarks and proposing a fine-tuning strategy that improves ROUGE scores by over 50% against baselines.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── PROJECTS ── -->
+    <section id="projects" class="page-section">
+      <div class="section-title">
+        <span>projects</span>
+      </div>
+      <div class="pub-list">
+
+        <!-- ── CASESAGE ── -->
+        <div class="pub-item">
+          <div class="pub-number">1.</div>
+          <div class="pub-body">
+            <div class="pub-title"><a href="#">CaseSage — AI System for Indian Legal Documents</a></div>
+            <div class="pub-authors">Nov 2024 – May 2025</div>
+            <div class="pub-venue">Longformer · NER · Neo4j · DeepSeek-v3 · FAISS · LSTM · RAGAS</div>
+
+            <div class="pub-abstract" style="margin-top:.6rem;">
+              <strong>Module 1 — Abstractive Summarization</strong><br>
+              <em>Problem:</em> Indian legal judgments frequently exceed 50,000 words, making manual review impractical and standard summarization models inadequate due to token limitations.<br>
+              <em>Solution:</em> Implemented Longformer-based abstractive summarization, natively handling 16K+ token documents without truncation.<br>
+              <em>Improvement:</em> Achieved a <strong>50% improvement in ROUGE score</strong> over transformer baselines on domain-specific legal corpora.
+            </div>
+
+            <div class="pub-abstract" style="margin-top:.6rem;">
+              <strong>Module 2 — Extractive Summarization via Entity Ranking</strong><br>
+              <em>Problem:</em> Abstractive summaries occasionally omit critical legal entities such as precedents, statutes, and case-specific terminology that practitioners depend on.<br>
+              <em>Solution:</em> Designed an NER-based Entity Ranking pipeline using LSTMs to identify and surface key legal entities for extractive summarization alongside the abstractive output.<br>
+              <em>Improvement:</em> Entity recall improved significantly, with summaries retaining all precedent citations present in the source document.
+            </div>
+
+            <div class="pub-abstract" style="margin-top:.6rem;">
+              <strong>Module 3 — Precedent Retrieval via Knowledge Graphs</strong><br>
+              <em>Problem:</em> Keyword-based search fails to capture relational context between cases — a judge citing a case from 1987 may not use its exact title.<br>
+              <em>Solution:</em> Constructed a Neo4j knowledge graph encoding case relationships, statutes, and judicial outcomes, enabling graph-traversal-based precedent lookup.<br>
+              <em>Improvement:</em> Retrieval accuracy improved by <strong>40%</strong> compared to BM25 keyword search on a held-out query set.
+            </div>
+
+            <div class="pub-abstract" style="margin-top:.6rem;">
+              <strong>Module 4 — RAG-based Question Answering</strong><br>
+              <em>Problem:</em> Legal practitioners need to query specific clauses, rulings, or interpretations from large document collections in natural language — traditional search returns entire documents, not answers.<br>
+              <em>Solution:</em> Integrated DeepSeek-v3 with a FAISS retrieval layer and RAGAS-based evaluation to deliver precise, citation-grounded answers to natural-language queries over the legal corpus.<br>
+              <em>Improvement:</em> Reduced average lookup time by <strong>65%</strong> relative to manual search, with RAGAS faithfulness scores consistently above 0.85.
+            </div>
+          </div>
+        </div>
+
+        <!-- ── AUTOCRM ── -->
+        <div class="pub-item">
+          <div class="pub-number">2.</div>
+          <div class="pub-body">
+            <div class="pub-title"><a href="#">AutoCRM — Explainable Agentic CRM Automation</a></div>
+            <div class="pub-authors">Jan 2025 – Apr 2025</div>
+            <div class="pub-venue">CrewAI · GPT-4o-mini · Streamlit · LangChain · FastAPI</div>
+
+            <div class="pub-abstract" style="margin-top:.6rem;">
+              <em>Problem:</em> Conventional CRM automation tools act on customer data without providing reasoning — sales teams are unable to understand, audit, or override automated decisions, leading to low adoption and trust deficits.
+            </div>
+            <div class="pub-abstract" style="margin-top:.5rem;">
+              <em>Solution:</em> Orchestrated a multi-agent B2C pipeline using CrewAI and GPT-4o-mini comprising four specialized agents: a scoring agent for customer prioritization, an outreach agent for personalized communication, a critic agent for self-correction, and a churn escalation agent — each outputting a written justification alongside every action. A Streamlit interface enables non-technical business users to adjust scoring weights, outreach tone, and agent behavior in plain language, dynamically rewriting system prompts without code changes.
+            </div>
+            <div class="pub-abstract" style="margin-top:.5rem;">
+              <em>Improvement:</em> End-to-end customer outreach pipeline operates fully autonomously with complete decision traceability, reducing manual intervention in the CRM workflow and enabling non-technical stakeholders to configure and audit agent behavior independently.
+            </div>
+          </div>
+        </div>
+
+        <!-- ── GRAPHMIND ── -->
+        <div class="pub-item">
+          <div class="pub-number">3.</div>
+          <div class="pub-body">
+            <div class="pub-title"><a href="#">GraphMind — Agentic TensorFlow Debugger</a></div>
+            <div class="pub-authors">Sep 2025 – Oct 2025</div>
+            <div class="pub-venue">LangGraph · FAISS · NVIDIA Nemotron · ReAct · TensorFlow</div>
+
+            <div class="pub-abstract" style="margin-top:.6rem;">
+              <em>Problem:</em> Debugging deep learning pipelines is time-intensive — error messages are often cryptic, stack traces span multiple files, and the root cause frequently lies in tensor shape mismatches or configuration errors that static analysis tools cannot interpret in context.
+            </div>
+            <div class="pub-abstract" style="margin-top:.5rem;">
+              <em>Solution:</em> Built an agentic debugging system that represents the codebase as a graph structure, retrieves semantically similar past error resolutions via FAISS, and uses NVIDIA Nemotron for code-level reasoning — all orchestrated by a ReAct (Reasoning-Action) agent that plans, executes, and observes iteratively. Self-learning feedback loops persist resolved error patterns, continuously expanding the retrieval corpus.
+            </div>
+            <div class="pub-abstract" style="margin-top:.5rem;">
+              <em>Improvement:</em> Achieved a <strong>45% improvement in debugging accuracy</strong> over static analysis baselines, with measurable reduction in mean time-to-resolution for common TensorFlow runtime errors.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── EXPERIENCE ── -->
+    <section id="experience" class="page-section">
+      <div class="section-title"><span>experience</span></div>
+      <div class="pub-list">
+
+        <div class="pub-item">
+          <div class="pub-number">—</div>
+          <div class="pub-body">
+            <div class="pub-title">Graduate Research Assistant — CLIP Lab, UMD</div>
+            <div class="pub-authors">
+              <a href="https://wiki.umiacs.umd.edu/clip/" target="_blank">University of Maryland, College Park</a>
+              &nbsp;·&nbsp; Sep 2025 – Present
+            </div>
+            <div class="pub-venue">NLP · Dense Retrieval · Political Discourse Analysis · Multimodal Evaluation</div>
+            <div class="pub-abstract">
+              <em>Problem:</em> Political dogwhistles — coded phrases that carry different meanings for general and in-group audiences — are deliberately designed to evade detection, making automated identification a non-trivial NLP problem requiring context-sensitive classification beyond surface-form pattern matching.<br><br>
+              <em>Solution:</em> Designed and implemented a multi-stage pipeline comprising bulk audio acquisition via yt-dlp, large-scale transcription using Whisper large-v3 on an A100 GPU, semantic indexing with FAISS (IndexFlatIP, cosine similarity), and contrastive few-shot classification using GPT-4 with OpenAI embeddings. Additionally developed scalable evaluation frameworks incorporating both text and computer vision techniques for cross-modal signal detection.<br><br>
+              <em>Improvement:</em> Achieved <strong>98% recall and 100% precision</strong> on the SALT-NLP benchmark, validated using a JD Vance speech as a positive control and a Joe Rogan episode as a negative control. Pipeline is currently being scaled to thousands of podcast episodes.
+            </div>
+          </div>
+        </div>
+
+        <div class="pub-item">
+          <div class="pub-number">—</div>
+          <div class="pub-body">
+            <div class="pub-title">Founding Engineer — EyeZenX Analytics Pvt. Ltd.</div>
+            <div class="pub-authors">Feb 2025 – Aug 2025</div>
+            <div class="pub-venue">Medical Imaging · EfficientNet B4 · U-Net · MobileNetV3 · AWS · Flask</div>
+            <div class="pub-abstract">
+              <em>Problem:</em> Manual screening for retinal diseases such as diabetic retinopathy is slow, costly, and subject to inter-examiner variability, particularly in resource-constrained clinical settings where specialist availability is limited.<br><br>
+              <em>Solution:</em> Designed and deployed an end-to-end ML system for fundus image analysis comprising EfficientNet B4 for disease classification, U-Net for microvascular segmentation, and MobileNetV3 for image quality assessment — served via Flask on AWS EC2 with a ReactJS frontend for clinical use.<br><br>
+              <em>Improvement:</em> Improved diagnostic success rates by <strong>25%</strong> in clinical evaluation. The core pipeline architecture is covered by a <strong>stakeholder patent</strong>.
+            </div>
+          </div>
+        </div>
+
+        <div class="pub-item">
+          <div class="pub-number">—</div>
+          <div class="pub-body">
+            <div class="pub-title">Machine Learning Intern — Kaar Technologies</div>
+            <div class="pub-authors">May 2024 – Feb 2025</div>
+            <div class="pub-venue">RAG · LangChain · TinyLLaMA · FastAPI · Gemini Pro · Word2Vec · spaCy</div>
+            <div class="pub-abstract">
+              <em>Problem:</em> The organization faced three distinct operational bottlenecks: slow document QA over large corpora, manual overhead in candidate evaluation workflows, and lack of automated tooling for KPI extraction from unstructured business reports.<br><br>
+              <em>Solution:</em> (1) Implemented a Multi-Document QA RAG pipeline using LangChain, FAISS, and TinyLLaMA-1.1B with prompt engineering optimizations. (2) Built a GenAI Recruitment Portal automating structured candidate interviews using FastAPI and Gemini Pro. (3) Developed a lightweight KPI retrieval system using Word2Vec and spaCy for extraction and classification of business metrics from unstructured reports.<br><br>
+              <em>Improvement:</em> Reduced query response latency by <strong>35%</strong>, eliminated manual interview scheduling overhead, and cut KPI report processing time by <strong>40%</strong>.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── EDUCATION ── -->
+    <section id="education" class="page-section">
+      <div class="section-title"><span>education</span></div>
+      <div class="pub-list">
+
+        <div class="pub-item">
+          <div class="pub-number">—</div>
+          <div class="pub-body">
+            <div class="pub-title">M.S. in Applied Machine Learning</div>
+            <div class="pub-authors">
+              University of Maryland, College Park &nbsp;·&nbsp; Sep 2025 – May 2027
+            </div>
+            <div class="pub-venue">GPA: 4.0 / 4.0</div>
+            <div style="font-size:.82rem;color:var(--muted);margin-top:.2rem;">
+              Principles of Machine Learning &nbsp;·&nbsp; Data Science &nbsp;·&nbsp; Probability and Statistics
+            </div>
+          </div>
+        </div>
+
+        <div class="pub-item">
+          <div class="pub-number">—</div>
+          <div class="pub-body">
+            <div class="pub-title">B.E. in Computer Science &amp; Engineering</div>
+            <div class="pub-authors">
+              College of Engineering, Guindy (Anna University) &nbsp;·&nbsp; Nov 2021 – May 2025
+            </div>
+            <div class="pub-venue">GPA: 3.66 / 4.0</div>
+            <div style="font-size:.82rem;color:var(--muted);margin-top:.2rem;">
+              Data Structures &amp; Algorithms &nbsp;·&nbsp; Computer Architecture &nbsp;·&nbsp; Operating Systems &nbsp;·&nbsp; DBMS
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── FOOTER ── */  -->
+    <footer class="page-footer">
+      <p>
+        © 2026 Surendra Kumar Chandrasekaran.
+        Inspired by <a href="https://github.com/alshedivat/al-folio" target="_blank">al-folio</a> theme.
+        Hosted on <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
+      </p>
+    </footer>
+
+  </main>
+</div><!-- end layout -->
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  /* ── THEME TOGGLE ── */
+  const btn = document.getElementById('themeToggle');
+  const html = document.documentElement;
+  const icon = btn.querySelector('i');
+
+  const saved = localStorage.getItem('theme') || 'light';
+  html.setAttribute('data-theme', saved);
+  icon.className = saved === 'dark' ? 'fa fa-sun' : 'fa fa-moon';
+
+  btn.addEventListener('click', () => {
+    const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    html.setAttribute('data-theme', next);
+    icon.className = next === 'dark' ? 'fa fa-sun' : 'fa fa-moon';
+    localStorage.setItem('theme', next);
+  });
+
+  /* ── ACTIVE NAV on scroll ── */
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.navbar-nav a');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`.navbar-nav a[href="#${e.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+
+  /* ── SCROLL REVEAL ── */
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.05 });
+
+  document.querySelectorAll('.page-section').forEach((s, i) => {
+    s.style.cssText = `opacity:0;transform:translateY(12px);transition:opacity .45s ease ${i*0.06}s,transform .45s ease ${i*0.06}s`;
+    io.observe(s);
+  });
+</script>
+</body>
+</html>

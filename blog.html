@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Blog — Surendra Kumar Chandrasekaran</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.4/css/academicons.min.css"/>
+  <style>
+    .blog-layout { max-width: 760px; margin: 0 auto; padding: 80px 2rem 5rem; }
+
+    .blog-header { margin-bottom: 2.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1.25rem; }
+    .blog-header h1 { font-size: 1.5rem; font-weight: 500; color: var(--heading); margin-bottom: .3rem; }
+    .blog-header p { font-size: .88rem; color: var(--muted); }
+
+    .post-list { display: flex; flex-direction: column; gap: 0; }
+
+    .post-item {
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .post-item:first-child { border-top: 1px solid var(--border); }
+
+    .post-meta {
+      display: flex; align-items: center; gap: .75rem;
+      font-size: .75rem; color: var(--muted);
+      margin-bottom: .5rem;
+      font-family: 'Roboto Mono', monospace;
+    }
+
+    .post-tag {
+      background: var(--tag-bg); color: var(--tag-text);
+      padding: .1rem .45rem; border-radius: 3px;
+      font-size: .7rem;
+    }
+
+    .post-title {
+      font-size: 1.05rem; font-weight: 500;
+      color: var(--heading); margin-bottom: .4rem;
+      line-height: 1.4;
+    }
+    .post-title a { color: var(--heading); text-decoration: none; }
+    .post-title a:hover { color: var(--link); text-decoration: underline; }
+
+    .post-excerpt {
+      font-size: .875rem; color: var(--muted);
+      line-height: 1.75; margin-bottom: .75rem;
+    }
+
+    .post-readmore {
+      font-size: .8rem; color: var(--link);
+      text-decoration: none; font-weight: 500;
+    }
+    .post-readmore:hover { text-decoration: underline; }
+
+    /* ── SINGLE POST (shown when hash matches) ── */
+    .post-full { display: none; }
+    .post-full.active { display: block; }
+    .post-list-view { display: block; }
+    .post-list-view.hidden { display: none; }
+
+    .post-full-header { margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+    .post-full-header h1 { font-size: 1.5rem; font-weight: 500; color: var(--heading); margin-bottom: .5rem; line-height: 1.35; }
+    .back-link { font-size: .82rem; color: var(--muted); text-decoration: none; display: inline-flex; align-items: center; gap: .3rem; margin-bottom: 1.25rem; }
+    .back-link:hover { color: var(--link); text-decoration: none; }
+
+    .post-content { font-size: .92rem; line-height: 1.85; color: var(--text); }
+    .post-content h2 { font-size: 1.1rem; font-weight: 500; color: var(--heading); margin: 1.75rem 0 .6rem; border-bottom: 1px solid var(--border); padding-bottom: .3rem; }
+    .post-content h3 { font-size: .97rem; font-weight: 500; color: var(--heading); margin: 1.25rem 0 .4rem; }
+    .post-content p { margin-bottom: .9rem; }
+    .post-content ul, .post-content ol { padding-left: 1.4rem; margin-bottom: .9rem; }
+    .post-content li { margin-bottom: .3rem; }
+    .post-content code {
+      font-family: 'Roboto Mono', monospace;
+      font-size: .82em;
+      background: var(--tag-bg);
+      padding: .1rem .35rem;
+      border-radius: 3px;
+      color: var(--tag-text);
+    }
+    .post-content pre {
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem 1.25rem;
+      overflow-x: auto;
+      margin-bottom: .9rem;
+    }
+    .post-content pre code { background: none; padding: 0; font-size: .82rem; color: var(--text); }
+    .post-content blockquote {
+      border-left: 3px solid var(--border);
+      padding: .5rem 1rem;
+      margin: 1rem 0;
+      color: var(--muted);
+      font-style: italic;
+    }
+    .post-content strong { font-weight: 600; color: var(--heading); }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="navbar-brand">Surendra Kumar Chandrasekaran</a>
+  <ul class="navbar-nav">
+    <li><a href="index.html">about</a></li>
+    <li><a href="blog.html" class="active">blog</a></li>
+    <li><a href="index.html#publications">publications</a></li>
+    <li><a href="index.html#projects">projects</a></li>
+    <li><a href="cv.html">cv</a></li>
+  </ul>
+  <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+    <i class="fa fa-moon"></i>
+  </button>
+</nav>
+
+<div class="blog-layout">
+
+  <!-- ── POST LIST ── -->
+  <div class="post-list-view" id="postListView">
+
+    <div class="blog-header">
+      <h1>Blog</h1>
+      <p>Thoughts on NLP research, agentic AI, and lessons from building things that matter.</p>
+    </div>
+
+    <div class="post-list">
+
+      <div class="post-item">
+        <div class="post-meta">
+          <span>Mar 10, 2026</span>
+          <span class="post-tag">NLP</span>
+          <span class="post-tag">Research</span>
+        </div>
+        <div class="post-title">
+          <a href="#post-dogwhistle" class="post-link">Why Dogwhistle Detection is Harder Than It Sounds</a>
+        </div>
+        <div class="post-excerpt">
+          Political dogwhistles are coded phrases that mean one thing to the general public
+          and something very different to a specific in-group. Detecting them computationally
+          turns out to be a surprisingly hard retrieval and classification problem —
+          here's what I learned building a pipeline that gets 98% recall on the SALT-NLP benchmark.
+        </div>
+        <a href="#post-dogwhistle" class="post-readmore post-link">Read more →</a>
+      </div>
+
+      <div class="post-item">
+        <div class="post-meta">
+          <span>Feb 5, 2026</span>
+          <span class="post-tag">Agentic AI</span>
+          <span class="post-tag">LLMs</span>
+        </div>
+        <div class="post-title">
+          <a href="#post-agentic" class="post-link">What Makes an AI Agent Actually Useful?</a>
+        </div>
+        <div class="post-excerpt">
+          Everyone is building agents right now. Most of them are demos.
+          After building AutoCRM — a multi-agent system that actually ships to business users —
+          I have some thoughts on what separates a useful agent from a flashy one.
+        </div>
+        <a href="#post-agentic" class="post-readmore post-link">Read more →</a>
+      </div>
+
+      <div class="post-item">
+        <div class="post-meta">
+          <span>Jan 18, 2026</span>
+          <span class="post-tag">RAG</span>
+          <span class="post-tag">Engineering</span>
+        </div>
+        <div class="post-title">
+          <a href="#post-rag" class="post-link">RAG is Not Magic: Lessons from Building Three RAG Systems</a>
+        </div>
+        <div class="post-excerpt">
+          Retrieval-Augmented Generation sounds simple in blog posts. In practice,
+          every component has failure modes you don't anticipate until production.
+          Here's what I actually learned building RAG pipelines for legal documents,
+          enterprise QA, and political speech.
+        </div>
+        <a href="#post-rag" class="post-readmore post-link">Read more →</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── FULL POST: DOGWHISTLE ── -->
+  <div class="post-full" id="post-dogwhistle">
+    <a href="blog.html" class="back-link"><i class="fa fa-arrow-left"></i> Back to all posts</a>
+    <div class="post-full-header">
+      <div class="post-meta">
+        <span>Mar 10, 2026</span>
+        <span class="post-tag">NLP</span>
+        <span class="post-tag">Research</span>
+      </div>
+      <h1>Why Dogwhistle Detection is Harder Than It Sounds</h1>
+    </div>
+    <div class="post-content">
+      <p>
+        A dogwhistle is a phrase that carries a hidden meaning — one that a general audience hears as innocuous,
+        but an in-group recognizes as a signal. Political dogwhistles are everywhere in modern discourse,
+        and they are deliberately designed to be deniable.
+      </p>
+      <h2>The Core Challenge</h2>
+      <p>
+        Most NLP classification tasks have a clear signal: the text either says something or it doesn't.
+        Dogwhistles are different. The same phrase can be neutral in one context and loaded in another.
+        "Urban voters," "inner city," "globalist" — these are not inherently problematic words,
+        but in specific political contexts, they carry meaning that a model trained on surface form will miss.
+      </p>
+      <p>
+        This means standard keyword matching fails immediately. And naive fine-tuning fails too,
+        because the training signal is too sparse and context-dependent.
+      </p>
+      <h2>Our Approach</h2>
+      <p>
+        The pipeline I built at CLIP Lab uses three stages:
+      </p>
+      <ol>
+        <li><strong>Transcription at scale</strong> — yt-dlp + Whisper large-v3 on an A100 GPU. We process hours of podcast audio per day.</li>
+        <li><strong>Dense retrieval</strong> — each transcript segment is embedded with OpenAI embeddings and indexed in FAISS (IndexFlatIP for cosine similarity). A query against a curated dogwhistle lexicon surfaces candidates.</li>
+        <li><strong>Contrastive classification</strong> — GPT-4 receives the candidate segment alongside a neutral paraphrase and a known dogwhistle example. It decides: is this usage coded or not?</li>
+      </ol>
+      <h2>Results</h2>
+      <p>
+        On the SALT-NLP benchmark: <strong>98% recall and 100% precision</strong>.
+        We validated with a JD Vance speech as a positive control and a Joe Rogan episode as a negative control.
+        Early precision metrics were unreliable because the SALT-NLP taxonomy contains only positive examples —
+        so we had to construct our own negatives.
+      </p>
+      <h2>What I'd Do Differently</h2>
+      <p>
+        The contrastive prompting approach works, but it's slow and expensive per segment.
+        Next step is a lighter-weight first-pass classifier (fine-tuned BERT or similar)
+        to reduce the number of segments sent to GPT-4.
+        That should cut cost by ~80% with minimal recall loss.
+      </p>
+    </div>
+  </div>
+
+  <!-- ── FULL POST: AGENTIC ── -->
+  <div class="post-full" id="post-agentic">
+    <a href="blog.html" class="back-link"><i class="fa fa-arrow-left"></i> Back to all posts</a>
+    <div class="post-full-header">
+      <div class="post-meta">
+        <span>Feb 5, 2026</span>
+        <span class="post-tag">Agentic AI</span>
+        <span class="post-tag">LLMs</span>
+      </div>
+      <h1>What Makes an AI Agent Actually Useful?</h1>
+    </div>
+    <div class="post-content">
+      <p>
+        I have built agents that impressed people in demos and fell apart in production.
+        After shipping AutoCRM — a multi-agent CRM system used by actual business users —
+        I think I understand the difference.
+      </p>
+      <h2>The Demo Problem</h2>
+      <p>
+        Demos optimize for the best case. You pick a clean input, the agent reasons beautifully,
+        and the output looks like magic. Real users send messy inputs, ask ambiguous questions,
+        and expect consistent behavior. Most agent frameworks are not built for that.
+      </p>
+      <h2>Three Things That Actually Matter</h2>
+      <p><strong>1. Explainability over performance.</strong>
+        Users don't trust agents they can't understand. AutoCRM requires every agent to output
+        a written justification alongside its action. This slows things down slightly —
+        but it means a business user can audit and override any decision.
+        Trust drives adoption more than accuracy does.
+      </p>
+      <p><strong>2. Graceful failure, not silent failure.</strong>
+        Agents fail in weird ways. A critic agent that reviews outputs before they're finalized
+        catches most of these — not all, but most. Design for failure from the start.
+      </p>
+      <p><strong>3. Configurability without code.</strong>
+        The most valuable thing we built in AutoCRM was the Streamlit interface that lets
+        users rewrite agent system prompts in plain language. Non-technical stakeholders
+        could tune the agent's behavior themselves. That changed the adoption curve entirely.
+      </p>
+      <h2>The Bottom Line</h2>
+      <p>
+        A useful agent is one a non-technical user would choose to use again tomorrow.
+        That means explainability, reliability, and control — in roughly that order.
+      </p>
+    </div>
+  </div>
+
+  <!-- ── FULL POST: RAG ── -->
+  <div class="post-full" id="post-rag">
+    <a href="blog.html" class="back-link"><i class="fa fa-arrow-left"></i> Back to all posts</a>
+    <div class="post-full-header">
+      <div class="post-meta">
+        <span>Jan 18, 2026</span>
+        <span class="post-tag">RAG</span>
+        <span class="post-tag">Engineering</span>
+      </div>
+      <h1>RAG is Not Magic: Lessons from Building Three RAG Systems</h1>
+    </div>
+    <div class="post-content">
+      <p>
+        Retrieval-Augmented Generation is the most overhyped and underspecified pattern in applied ML right now.
+        Everyone says "just use RAG." Almost nobody talks about why it fails.
+      </p>
+      <h2>Failure Mode 1: Bad Chunking</h2>
+      <p>
+        How you split documents determines what gets retrieved. Fixed-size chunking loses context at boundaries.
+        For legal documents in CaseSage, we switched to semantic chunking — splitting on paragraph and section boundaries —
+        which improved retrieval accuracy by more than any model change we made.
+      </p>
+      <h2>Failure Mode 2: Wrong Similarity Metric</h2>
+      <p>
+        FAISS defaults to L2 distance. For most embedding models, cosine similarity works better.
+        Switching from IndexFlatL2 to IndexFlatIP (with normalized vectors) gave us a meaningful
+        recall improvement in the dogwhistle pipeline. This is a one-line change that's easy to overlook.
+      </p>
+      <pre><code># Wrong (L2 distance)
+index = faiss.IndexFlatL2(dim)
+
+# Right (cosine similarity via inner product on normalized vectors)
+faiss.normalize_L2(embeddings)
+index = faiss.IndexFlatIP(dim)</code></pre>
+      <h2>Failure Mode 3: No Evaluation</h2>
+      <p>
+        Most RAG systems ship without a retrieval evaluation suite. If you don't measure recall@k
+        on a held-out query set, you have no idea if your changes help or hurt.
+        RAGAS is a good starting point for end-to-end RAG evaluation.
+        We used it for CaseSage and it caught two regressions that we would have shipped otherwise.
+      </p>
+      <h2>The Honest Summary</h2>
+      <p>
+        RAG works well when your retrieval is good, your chunks are meaningful, and you evaluate it.
+        None of those things are given. They all require careful engineering.
+      </p>
+    </div>
+  </div>
+
+  <footer class="page-footer" style="margin-top:3rem;">
+    <p>© 2026 Surendra Kumar Chandrasekaran · <a href="index.html">home</a> · <a href="cv.html">cv</a></p>
+  </footer>
+
+</div>
+
+<script>
+  /* theme */
+  const btn = document.getElementById('themeToggle');
+  const html = document.documentElement;
+  const icon = btn.querySelector('i');
+  const saved = localStorage.getItem('theme') || 'light';
+  html.setAttribute('data-theme', saved);
+  icon.className = saved === 'dark' ? 'fa fa-sun' : 'fa fa-moon';
+  btn.addEventListener('click', () => {
+    const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    html.setAttribute('data-theme', next);
+    icon.className = next === 'dark' ? 'fa fa-sun' : 'fa fa-moon';
+    localStorage.setItem('theme', next);
+  });
+
+  /* post routing via hash */
+  function route() {
+    const hash = window.location.hash;
+    const listView = document.getElementById('postListView');
+    const posts = document.querySelectorAll('.post-full');
+
+    let matched = false;
+    posts.forEach(p => {
+      if ('#' + p.id === hash) {
+        p.classList.add('active');
+        matched = true;
+      } else {
+        p.classList.remove('active');
+      }
+    });
+
+    listView.classList.toggle('hidden', matched);
+  }
+
+  /* intercept post-link clicks to use hash routing */
+  document.querySelectorAll('.post-link').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      window.location.hash = a.getAttribute('href');
+    });
+  });
+
+  window.addEventListener('hashchange', route);
+  route();
+</script>
+</body>
+</html>
