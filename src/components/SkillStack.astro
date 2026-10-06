@@ -1,0 +1,116 @@
+---
+/**
+ * Skills drawn as the stack they form, not as a list of categories.
+ *
+ * Three previous versions of this section failed the same way: a grouped list
+ * of tool names, however it was styled, says "here are words I know". Read
+ * top to bottom, these layers say something a list cannot - that the same
+ * person can take a problem from orchestration down to the runtime it ships
+ * on. That is the actual claim worth making to someone hiring an AI or
+ * forward-deployed engineer.
+ *
+ * Each layer names the work its tools were used in, derived at build time
+ * from those same stacks, so the section cannot drift from the work above.
+ */
+import { SKILLS } from '../data/site';
+
+interface Props {
+  layers: { label: string; caption: string; items: string[] }[];
+  /** skill name -> entries that list it in their stack */
+  usage: Record<string, string[]>;
+}
+
+const { layers, usage } = Astro.props;
+
+// A tool dropped from the stack would silently disappear from the site, so
+// fail the build instead of shipping a toolkit that is quietly incomplete.
+const declared = SKILLS.flatMap((g) => g.items);
+const placed = layers.flatMap((l) => l.items);
+const missing = declared.filter((s) => !placed.includes(s));
+const extra = placed.filter((s) => !declared.includes(s));
+if (missing.length || extra.length) {
+  throw new Error(
+    `STACK_LAYERS does not match SKILLS. Missing: [${missing}]. Unknown: [${extra}].`,
+  );
+}
+
+const used = (skill: string) => usage[skill] ?? [];
+
+const appliedIn = (items: string[]) => {
+  const seen = new Set<string>();
+  for (const item of items) for (const where of used(item)) seen.add(where);
+  return [...seen];
+};
+
+---
+
+<div>
+  <p class="mb-5 text-[0.9rem] leading-relaxed text-muted">
+    Most of what I build has the same shape, so here it is as a stack rather
+    than a word list. Read it top to bottom: a request enters at the
+    orchestration layer and leaves through the runtime at the bottom.
+  </p>
+
+  <ol class="overflow-hidden rounded-lg border border-line bg-surface">
+    {
+      layers.map((layer, i) => {
+        const where = appliedIn(layer.items);
+        // Each layer sits a step deeper, so the edge fades as you descend.
+        const depth = 1 - (i / layers.length) * 0.72;
+        return (
+          <li
+            class="relative border-b border-line last:border-0 sm:flex sm:gap-6"
+            style={`--depth:${depth.toFixed(3)}`}
+          >
+            <span
+              class="absolute inset-y-0 left-0 w-[3px] bg-accent-bright"
+              style="opacity:var(--depth)"
+              aria-hidden="true"
+            />
+
+            <div class="shrink-0 px-5 pt-4 sm:w-52 sm:py-5">
+              <p class="flex items-baseline gap-2">
+                <span class="font-mono text-[0.62rem] tabular-nums text-faint">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span class="font-mono text-[0.68rem] uppercase tracking-[0.1em] text-ink">
+                  {layer.label}
+                </span>
+              </p>
+              <p class="mt-1 pl-6 text-[0.76rem] leading-snug text-faint sm:pl-0">
+                {layer.caption}
+              </p>
+            </div>
+
+            <div class="min-w-0 flex-1 px-5 pb-4 pt-3 sm:py-5 sm:pl-0">
+              <ul class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+                {layer.items.map((skill) => {
+                  const hits = used(skill);
+                  return (
+                    <li
+                      class="inline-flex items-center gap-1.5 text-[0.84rem] font-medium text-ink"
+                      title={hits.length > 0 ? `Used in ${hits.join(', ')}` : undefined}
+                    >
+                      <span
+                        class="size-1.5 shrink-0 rounded-full bg-accent-bright"
+                        aria-hidden="true"
+                      />
+                      {skill}
+                    </li>
+                  );
+                })}
+              </ul>
+
+              {where.length > 0 && (
+                <p class="mt-2.5 text-[0.74rem] text-faint">
+                  <span aria-hidden="true">&#8627;</span>{' '}
+                  {where.join(' · ')}
+                </p>
+              )}
+            </div>
+          </li>
+        );
+      })
+    }
+  </ol>
+</div>

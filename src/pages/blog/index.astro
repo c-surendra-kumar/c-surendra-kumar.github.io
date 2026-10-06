@@ -1,0 +1,58 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Section from '../../components/Section.astro';
+import Icon from '../../components/Icon.astro';
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
+---
+
+<Base
+  title="Blog"
+  description="Notes on RAG, agentic systems, and applied NLP by Surendra Kumar Chandrasekaran."
+>
+  <Section eyebrow="Notes" title="Blog">
+    {
+      posts.length === 0 ? (
+        <p class="text-sm text-muted">Nothing published yet.</p>
+      ) : (
+        <div class="divide-y divide-line border-y border-line">
+          {posts.map((post) => (
+            <article class="py-6">
+              <div class="mb-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[0.68rem] text-faint">
+                <time datetime={post.data.pubDate.toISOString()}>
+                  {fmt(post.data.pubDate)}
+                </time>
+                {post.data.tags.map((t) => (
+                  <span class="rounded-full border border-line bg-surface-2 px-2 py-0.5">
+                    {t}
+                  </span>
+                ))}
+              </div>
+              <h3 class="text-base font-semibold">
+                <a href={`/blog/${post.id}/`} class="text-ink no-underline hover:text-accent hover:no-underline">
+                  {post.data.title}
+                </a>
+              </h3>
+              <p class="mt-1.5 text-sm leading-relaxed text-muted">
+                {post.data.description}
+              </p>
+              <a
+                href={`/blog/${post.id}/`}
+                class="mt-2.5 inline-flex items-center gap-1 text-sm font-medium text-accent no-underline hover:no-underline"
+              >
+                Read more
+                <Icon name="arrow-right" size={14} />
+              </a>
+            </article>
+          ))}
+        </div>
+      )
+    }
+  </Section>
+</Base>

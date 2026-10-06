@@ -1,0 +1,55 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Section from '../../components/Section.astro';
+import EntryCard from '../../components/EntryCard.astro';
+
+const projects = (await getCollection('projects')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+const featured = projects.filter((p) => p.data.featured);
+const earlier = projects.filter((p) => !p.data.featured);
+---
+
+<Base
+  title="Projects"
+  description="Agentic systems, RAG pipelines, legal NLP, and distributed-training optimization - projects by Surendra Kumar Chandrasekaran."
+>
+  <Section eyebrow="Selected work" title="Projects">
+    <div class="flex flex-col gap-4">
+      {
+        featured.map((p) => (
+          <EntryCard
+            title={p.data.title}
+            subtitle={p.data.tagline}
+            start={p.data.start}
+            end={p.data.end}
+            stack={p.data.stack}
+            segments={p.data.segments}
+            links={p.data.links}
+          />
+        ))
+      }
+    </div>
+  </Section>
+
+  {
+    earlier.length > 0 && (
+      <Section eyebrow="Undergraduate" title="Earlier work">
+        <div class="flex flex-col gap-4">
+          {earlier.map((p) => (
+            <EntryCard
+              title={p.data.title}
+              subtitle={p.data.tagline}
+              start={p.data.start}
+              end={p.data.end}
+              stack={p.data.stack}
+              segments={p.data.segments}
+              links={p.data.links}
+            />
+          ))}
+        </div>
+      </Section>
+    )
+  }
+</Base>

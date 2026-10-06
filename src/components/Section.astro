@@ -1,0 +1,42 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  id?: string;
+  eyebrow?: string;
+  title: string;
+  /** Optional "see all" style link on the right of the header. */
+  linkHref?: string;
+  linkLabel?: string;
+  class?: string;
+}
+
+const { id, eyebrow, title, linkHref, linkLabel, class: className = '' } = Astro.props;
+---
+
+<section id={id} class:list={['py-12 sm:py-16', className]}>
+  <div class="mb-6 flex items-end justify-between gap-4 border-b border-line pb-3">
+    <div>
+      {
+        eyebrow && (
+          <p class="mb-2 font-mono text-[0.72rem] uppercase tracking-[0.16em] text-accent-bright">
+            {eyebrow}
+          </p>
+        )
+      }
+      <h2 class="text-[1.75rem] font-semibold sm:text-[2.5rem]">{title}</h2>
+    </div>
+    {
+      linkHref && (
+        <a
+          href={linkHref}
+          class="group inline-flex shrink-0 items-center gap-1 pb-1 text-sm text-muted no-underline hover:text-accent hover:no-underline"
+        >
+          {linkLabel}
+          <Icon name="arrow-right" size={14} />
+        </a>
+      )
+    }
+  </div>
+  <slot />
+</section>

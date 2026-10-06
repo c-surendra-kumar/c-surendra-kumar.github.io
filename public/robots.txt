@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://c-surendra-kumar.github.io/sitemap-index.xml

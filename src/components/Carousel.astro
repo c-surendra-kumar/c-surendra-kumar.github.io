@@ -1,0 +1,182 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+
+/**
+ * One award per slide: the photo fills the slide, and the award text sits over
+ * it at the bottom on a gradient scrim.
+ *
+ * The overlay text uses fixed white values rather than theme tokens.
+ * Everything else on the site sits on a known surface, so a token gives a
+ * known contrast ratio; this text sits on a photograph, so the scrim has to
+ * supply the contrast and the text has to be the colour the scrim was built
+ * for. It reads the same in light and dark mode by design.
+ *
+ * Built on CSS scroll-snap, so it scrolls natively with a trackpad, a
+ * touchscreen or the arrow keys, and still works with JavaScript disabled -
+ * the buttons and dots are an enhancement, not the mechanism.
+ */
+interface Item {
+  title: string;
+  date: string;
+  event?: string;
+  image?: string;
+  detail: string;
+}
+
+interface Props {
+  items: readonly Item[];
+  label: string;
+}
+
+const { items, label } = Astro.props;
+
+const photos = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/*.{jpg,jpeg,png,webp}',
+  { eager: true },
+);
+
+const photoFor = (name?: string) => {
+  if (!name) return undefined;
+  const hit = Object.entries(photos).find(([p]) => p.endsWith(`/${name}`));
+  return hit?.[1].default;
+};
+---
+
+<div class="carousel" data-carousel>
+  <div
+    class="carousel__track"
+    role="group"
+    aria-roledescription="carousel"
+    aria-label={label}
+    tabindex="0"
+    data-carousel-track
+  >
+    {
+      items.map((item, i) => {
+        const photo = photoFor(item.image);
+        return (
+          <article
+            class="carousel__slide"
+            role="group"
+            aria-roledescription="slide"
+            aria-label={`${i + 1} of ${items.length}: ${item.title}`}
+          >
+            {photo && (
+              <Image
+                src={photo}
+                alt=""
+                width={1280}
+                height={853}
+                class="carousel__photo"
+              />
+            )}
+
+            <div class="carousel__overlay">
+              <div class="carousel__heading">
+                <h3 class="carousel__title">{item.title}</h3>
+                {item.date && <span class="carousel__date">{item.date}</span>}
+              </div>
+              {item.event && <p class="carousel__event">{item.event}</p>}
+              <p class="carousel__detail">{item.detail}</p>
+            </div>
+          </article>
+        );
+      })
+    }
+  </div>
+
+  {
+    items.length > 1 && (
+      <div class="carousel__controls">
+        <div class="carousel__dots" data-carousel-dots>
+          {items.map((item, i) => (
+            <button
+              type="button"
+              class="carousel__dot"
+              data-index={i}
+              aria-label={`Show ${item.title}`}
+              aria-current={i === 0 ? 'true' : 'false'}
+            />
+          ))}
+        </div>
+
+        <div class="flex gap-1.5">
+          <button
+            type="button"
+            class="carousel__arrow"
+            data-carousel-prev
+            aria-label="Previous award"
+          >
+            <Icon name="arrow-left" size={14} />
+          </button>
+          <button
+            type="button"
+            class="carousel__arrow"
+            data-carousel-next
+            aria-label="Next award"
+          >
+            <Icon name="arrow-right" size={14} />
+          </button>
+        </div>
+      </div>
+    )
+  }
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((root) => {
+    const track = root.querySelector<HTMLElement>('[data-carousel-track]');
+    if (!track) return;
+
+    const slides = [...track.querySelectorAll<HTMLElement>('.carousel__slide')];
+    const dots = [...root.querySelectorAll<HTMLButtonElement>('.carousel__dot')];
+    const prev = root.querySelector<HTMLButtonElement>('[data-carousel-prev]');
+    const next = root.querySelector<HTMLButtonElement>('[data-carousel-next]');
+    if (slides.length < 2) return;
+
+    let index = 0;
+
+    const paint = () => {
+      dots.forEach((d, i) =>
+        d.setAttribute('aria-current', String(i === index)),
+      );
+      // The track does not wrap, so the arrows go inert at the ends rather
+      // than silently doing nothing.
+      if (prev) prev.disabled = index === 0;
+      if (next) next.disabled = index === slides.length - 1;
+    };
+
+    const go = (to: number) => {
+      index = Math.max(0, Math.min(slides.length - 1, to));
+      track.scrollTo({ left: slides[index]!.offsetLeft - track.offsetLeft,
+                       behavior: 'smooth' });
+      paint();
+    };
+
+    prev?.addEventListener('click', () => go(index - 1));
+    next?.addEventListener('click', () => go(index + 1));
+    dots.forEach((d, i) => d.addEventListener('click', () => go(i)));
+
+    track.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); go(index + 1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); go(index - 1); }
+    });
+
+    // Keep the dots honest when the user scrolls or swipes directly.
+    let tick: number;
+    track.addEventListener('scroll', () => {
+      clearTimeout(tick);
+      tick = window.setTimeout(() => {
+        const mid = track.scrollLeft + track.clientWidth / 2;
+        const nearest = slides.reduce((best, s, i) => {
+          const c = s.offsetLeft - track.offsetLeft + s.clientWidth / 2;
+          return Math.abs(c - mid) < best.d ? { i, d: Math.abs(c - mid) } : best;
+        }, { i: 0, d: Infinity }).i;
+        if (nearest !== index) { index = nearest; paint(); }
+      }, 90);
+    });
+
+    paint();
+  });
+</script>

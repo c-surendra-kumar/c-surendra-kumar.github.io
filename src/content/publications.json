@@ -1,0 +1,25 @@
+[
+  {
+    "id": "midas-2025-legal-summarization",
+    "title": "A Comparative Analysis of Transformer Models for Abstractive Summarization of Indian Legal Judgments",
+    "venue": "1st International Conference on Machine Intelligence and Data Science (MIDAS 2025), Springer. Paralakhemundi, Odisha, India.",
+    "venueShort": "MIDAS 2025",
+    "year": 2025,
+    "authors": ["Surendra Kumar Chandrasekaran"],
+    "self": "Surendra Kumar Chandrasekaran",
+    "abstract": "A comparative study of transformer architectures for abstractive summarization of long-form Indian legal judgments, which routinely exceed the context windows these models were trained for. Evaluates the candidates on a domain-specific benchmark and proposes a fine-tuning strategy for the legal-judgment setting.",
+    "order": 1
+  },
+  {
+    "id": "ieee-2025-siddha-naadi",
+    "title": "Data-Driven Analysis of Siddha Naadi Prediction System",
+    "venue": "IEEE, published 2025.",
+    "venueShort": "IEEE",
+    "year": 2025,
+    "authors": ["Sree Sharmila T", "Vennila M", "Surendra Kumar C", "Sugunthan S", "Shilaja R"],
+    "self": "Surendra Kumar C",
+    "url": "https://ieeexplore.ieee.org/document/11209099",
+    "abstract": "Applies machine learning to model pulse-based diagnostic patterns from the Siddha Naadi tradition, connecting a classical diagnostic practice to computational prediction methods.",
+    "order": 2
+  }
+]

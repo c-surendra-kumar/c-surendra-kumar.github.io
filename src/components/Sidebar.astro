@@ -1,0 +1,153 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import portrait from '../assets/portrait.jpg';
+import { SITE, SECTION_LINKS, INTERESTS } from '../data/site';
+---
+
+<aside
+  class="sidebar-rail lg:sticky lg:top-14 lg:max-h-[calc(100dvh-3.5rem)] lg:self-start lg:overflow-y-auto lg:py-10 lg:pr-3"
+>
+  <div
+    class="flex flex-col gap-5 border-b border-line pb-7 lg:border-0 lg:pb-0 lg:pt-0"
+  >
+    <div class="flex items-center gap-4 lg:flex-col lg:items-center lg:gap-4 lg:text-center">
+      <Image
+        src={portrait}
+        alt={SITE.name}
+        width={416}
+        height={416}
+        densities={[1, 2]}
+        loading="eager"
+        class="size-24 shrink-0 rounded-full border border-line object-cover lg:size-52"
+      />
+
+      <div class="min-w-0">
+        {/* The name lives in the top bar; repeating it here was redundant. */}
+        <p class="text-sm text-muted">{SITE.role}</p>
+        <p
+          class="mt-1.5 font-mono text-[0.65rem] uppercase tracking-[0.12em] text-faint"
+        >
+          {SITE.location}
+        </p>
+      </div>
+    </div>
+
+    {/* Availability, stated where a recruiter looks first. */}
+    <p
+      class="flex items-start gap-2 rounded-md border border-line bg-surface px-3 py-2 text-[0.8rem] leading-snug text-muted"
+    >
+      <span
+        class="mt-1.5 size-1.5 shrink-0 rounded-full bg-accent-bright"
+        aria-hidden="true"></span>
+      <span>{SITE.seeking}</span>
+    </p>
+
+    <div class="flex flex-wrap items-center gap-1.5">
+      <a
+        href={SITE.resumePath}
+        class="inline-flex items-center gap-1.5 rounded-md bg-ink px-3 py-1.5 text-[0.8rem] font-medium text-bg no-underline transition-opacity hover:opacity-90 hover:no-underline"
+      >
+        <Icon name="download" size={14} />
+        Resume
+      </a>
+
+      {
+        [
+          { href: `mailto:${SITE.email}`, icon: 'mail' as const, label: 'Email' },
+          { href: SITE.github, icon: 'github' as const, label: 'GitHub' },
+          { href: SITE.linkedin, icon: 'linkedin' as const, label: 'LinkedIn' },
+          { href: SITE.scholar, icon: 'scholar' as const, label: 'Google Scholar' },
+        ].map((l) => (
+          <a
+            href={l.href}
+            rel="me noopener"
+            title={l.label}
+            aria-label={l.label}
+            class="inline-flex size-8 items-center justify-center rounded-md border border-line text-muted no-underline transition-colors hover:border-accent-bright hover:bg-accent-soft hover:text-accent hover:no-underline"
+          >
+            <Icon name={l.icon} size={15} />
+          </a>
+        ))
+      }
+    </div>
+  </div>
+
+  {/* In-page navigation with a scroll spy. Desktop only: the top bar already
+      covers navigation on narrow screens. */}
+  <nav class="mt-7 hidden lg:block" aria-label="Sections">
+    <p
+      class="mb-2.5 font-mono text-[0.62rem] uppercase tracking-[0.14em] text-faint"
+    >
+      On this page
+    </p>
+    <ul class="flex flex-col">
+      {
+        SECTION_LINKS.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              data-spy={link.href.slice(1)}
+              class="spy-link block border-l border-line py-1.5 pl-3 text-[0.82rem] text-muted no-underline transition-colors hover:text-accent hover:no-underline"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  <div class="mt-7 hidden lg:block">
+    <p
+      class="mb-2.5 font-mono text-[0.62rem] uppercase tracking-[0.14em] text-faint"
+    >
+      Interests
+    </p>
+    <ul class="flex flex-wrap gap-1.5">
+      {
+        INTERESTS.map((i) => (
+          <li class="rounded-full border border-line bg-surface-2 px-2.5 py-0.5 text-[0.7rem] text-muted">
+            {i}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</aside>
+
+<script>
+  // Highlight the sidebar link for whichever section is currently in view.
+  const links = document.querySelectorAll<HTMLAnchorElement>('.spy-link');
+  const byId = new Map(
+    [...links].map((a) => [a.dataset.spy ?? '', a] as const),
+  );
+  const sections = [...byId.keys()]
+    .map((id) => document.getElementById(id))
+    .filter((el): el is HTMLElement => el !== null);
+
+  // The top bar carries spy links too, so run on every width now.
+  if (sections.length > 0) {
+    const visible = new Set<string>();
+
+    const paint = () => {
+      // Topmost visible section wins, so the marker never jumps backwards.
+      const active = sections.find((s) => visible.has(s.id))?.id;
+      links.forEach((a) =>
+        a.setAttribute('data-active', String(a.dataset.spy === active)),
+      );
+    };
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) =>
+          e.isIntersecting ? visible.add(e.target.id) : visible.delete(e.target.id),
+        );
+        paint();
+      },
+      { rootMargin: '-10% 0px -70% 0px', threshold: 0 },
+    );
+
+    sections.forEach((s) => io.observe(s));
+  }
+</script>

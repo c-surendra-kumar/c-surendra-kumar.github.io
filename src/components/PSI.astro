@@ -1,0 +1,108 @@
+---
+/**
+ * Problem -> Solution -> Improvement on a connected rail, so the three steps
+ * read as one argument rather than three loose paragraphs.
+ *
+ * Problem and Solution carry no panel of their own. Boxing them was tried and
+ * flattened the hierarchy: once all three sit in a container, the Improvement
+ * container stops meaning anything. They stay on --ink so they are easy to
+ * read, and the Improvement keeps the accent panel and the stat tiles, which
+ * is what makes it the payoff.
+ *
+ * An entry can carry several segments, because several of these roles solved
+ * genuinely separate problems. Each gets its own rail under its own heading;
+ * a single-segment entry renders with no heading.
+ *
+ * Tile values stay in the body sans with proportional figures - a display
+ * face or tabular figures at this size read as decoration, not data.
+ */
+interface Metric {
+  value: string;
+  label: string;
+  direction: 'up' | 'down' | 'flat';
+}
+
+interface Segment {
+  label?: string;
+  problem: string;
+  solution: string;
+  improvement?: string;
+  metrics?: readonly Metric[];
+}
+
+interface Props {
+  segments: readonly Segment[];
+  class?: string;
+}
+
+const { segments, class: className = '' } = Astro.props;
+
+// Every metric here is an improvement, so the arrow reports which way the
+// number moved rather than good-vs-bad. Using status red/green would imply a
+// judgement that is always the same, and would fight the accent.
+const arrow = { up: '↑', down: '↓', flat: '' } as const;
+
+const multi = segments.length > 1;
+---
+
+<div class:list={['flex flex-col', multi ? 'gap-6' : '', className]}>
+  {
+    segments.map((seg, i) => (
+      <section>
+        {seg.label && (
+          <h4 class="mb-3 flex items-baseline gap-2 text-[0.95rem] font-semibold">
+            {multi && (
+              <span class="font-mono text-[0.68rem] font-medium tabular-nums text-faint">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+            )}
+            {seg.label}
+          </h4>
+        )}
+
+        <ol class="psi-rail">
+          <li class="psi-step">
+            <span class="psi-dot" aria-hidden="true" />
+            <p class="psi-label">Problem</p>
+            <p class="psi-text">{seg.problem}</p>
+          </li>
+
+          <li class="psi-step">
+            <span class="psi-dot" aria-hidden="true" />
+            <p class="psi-label">Solution</p>
+            <p class="psi-text">{seg.solution}</p>
+          </li>
+
+          {seg.improvement && (
+            <li class="psi-step">
+              <span class="psi-dot psi-dot--filled" aria-hidden="true" />
+              <p class="psi-label psi-label--accent">Improvement</p>
+
+              <div class="psi-outcome">
+                {(seg.metrics?.length ?? 0) > 0 && (
+                  <div class="psi-stats">
+                    {seg.metrics!.map((m) => (
+                      <div class="psi-stat">
+                        <p class="psi-stat__value">
+                          {m.direction !== 'flat' && (
+                            <span class="psi-stat__arrow" aria-hidden="true">
+                              {arrow[m.direction]}
+                            </span>
+                          )}
+                          {m.value}
+                        </p>
+                        <p class="psi-stat__label">{m.label}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <p class="psi-outcome__text">{seg.improvement}</p>
+              </div>
+            </li>
+          )}
+        </ol>
+      </section>
+    ))
+  }
+</div>

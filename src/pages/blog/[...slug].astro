@@ -1,0 +1,38 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection, render } from 'astro:content';
+import Entry from '../../layouts/Entry.astro';
+
+export const getStaticPaths = (async () => {
+  // Drafts get no route at all, so a held post cannot be reached by URL.
+  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  return posts.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+
+const meta = [
+  d.pubDate.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    timeZone: 'UTC',
+  }),
+  ...d.tags,
+].join('  ·  ');
+---
+
+<Entry
+  title={d.title}
+  description={d.description}
+  meta={meta}
+  backHref="/blog/"
+  backLabel="All posts"
+>
+  <Content />
+</Entry>

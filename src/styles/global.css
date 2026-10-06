@@ -1,0 +1,551 @@
+/* ═══════════════════════════════════════════════════════════════
+   Design tokens: the whole palette lives here, once.
+   Reference: docs/design-language.md
+   ═══════════════════════════════════════════════════════════════ */
+
+@import "tailwindcss";
+
+/* Self-hosted type: removes the render-blocking Google Fonts requests
+   (and the duplicate load) that the previous site carried. */
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+@import "@fontsource-variable/jetbrains-mono/wght.css";
+@import "@fontsource-variable/source-serif-4/wght.css";
+
+/* Drive dark mode off data-theme, matching the toggle contract the previous
+   site already used (localStorage 'theme' + data-theme on <html>). */
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+@theme {
+  --color-bg: #f7f4ee;              /* cream canvas */
+  --color-surface: #ffffff;         /* cards */
+  --color-surface-2: #fbf9f5;       /* subtle inset panels */
+  --color-ink: #1a1a18;             /* warm near-black */
+  --color-muted: #5c5a54;           /* supporting copy */
+  --color-faint: #716e63;           /* captions, meta: AA on bg + surface */
+  --color-accent: #9a3412;          /* links + small text: AA on both grounds */
+  --color-accent-bright: #c2410c;   /* buttons, eyebrows, larger accents only */
+  --color-accent-soft: #c2410c14;   /* ~8% tint for hover grounds */
+  --color-line: #e5e1d8;            /* hairlines */
+  /* Logo tiles keep a light ground in BOTH themes: most company marks are
+     dark ink on transparency and vanish on a near-black card. */
+  --color-tile: #ffffff;
+  --color-tile-ink: #5c5a54;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
+  /* Headings only. A text serif rather than another grotesque: it reads as
+     editorial and considered where every portfolio's geometric sans reads as
+     a template. Body copy and stat values stay on Inter. */
+  --font-display: "Source Serif 4 Variable", Georgia, "Times New Roman", serif;
+}
+
+/* Dark mode overrides only the token values; every utility below reads
+   var(--color-*), so nothing else needs restating. */
+:root[data-theme="dark"] {
+  --color-bg: #17150f;              /* warm near-black, not a flat gray */
+  --color-surface: #1f1c16;
+  --color-surface-2: #241f18;
+  /* Brighter than a tinted off-white: at these sizes the warm grays read as
+     washed out on a near-black ground. All three clear AA on bg, surface and
+     surface-2 (worst pairing 6.37:1). */
+  --color-ink: #ffffff;
+  --color-muted: #cfc9bb;
+  --color-faint: #a8a192;
+  --color-accent: #e2792d;          /* brightened for contrast on dark */
+  --color-accent-bright: #e2792d;
+  --color-accent-soft: #e2792d1f;
+  --color-line: #2e2a22;
+  --color-tile: #f1eee8;            /* dimmed slightly so it does not glare */
+  --color-tile-ink: #5c5a54;
+}
+
+@layer base {
+  /* ── base ── */
+
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--color-bg);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Headings get the tight, geometric treatment the design language calls for. */
+  h1, h2, h3, h4 {
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.18;
+    text-wrap: balance;
+  }
+
+  a {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+  a:hover { text-decoration: underline; text-underline-offset: 2px; }
+
+  /* Visible focus for keyboard users, on every interactive element. */
+  :focus-visible {
+    outline: 2px solid var(--color-accent-bright);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+
+  /* Anchored sections must clear the sticky nav. */
+  :target { scroll-margin-top: 5.5rem; }
+
+  ::selection {
+    background: var(--color-accent-soft);
+    color: var(--color-ink);
+  }
+
+  /* Respect a reduced-motion preference: the scroll reveals are decorative. */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* ── prose: rendered markdown bodies (project writeups, posts) ── */
+
+  .prose {
+    color: var(--color-muted);
+    font-size: 0.975rem;
+    line-height: 1.75;
+  }
+
+  .prose > * + * { margin-top: 1rem; }
+
+  .prose h2 {
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid var(--color-line);
+    color: var(--color-ink);
+    font-size: 1.075rem;
+    font-weight: 600;
+  }
+
+  .prose h3 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.35rem;
+    color: var(--color-ink);
+    font-size: 0.975rem;
+    font-weight: 600;
+  }
+
+  .prose strong { color: var(--color-ink); font-weight: 600; }
+  .prose em { font-style: italic; }
+
+  .prose a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .prose ul, .prose ol { padding-left: 1.3rem; }
+  .prose ul { list-style: disc; }
+  .prose ol { list-style: decimal; }
+  .prose li + li { margin-top: 0.3rem; }
+  .prose li::marker { color: var(--color-faint); }
+
+  .prose code {
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-line);
+    border-radius: 3px;
+    padding: 0.1em 0.35em;
+    font-family: var(--font-mono);
+    font-size: 0.86em;
+    color: var(--color-ink);
+  }
+
+  .prose pre {
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-line);
+    border-radius: 6px;
+    padding: 0.95rem 1.1rem;
+    overflow-x: auto;        /* wide code scrolls inside its own box */
+    font-size: 0.84rem;
+    line-height: 1.6;
+  }
+
+  .prose pre code {
+    background: none;
+    border: 0;
+    padding: 0;
+    font-size: inherit;
+  }
+
+  .prose blockquote {
+    border-left: 2px solid var(--color-accent-bright);
+    padding: 0.3rem 0 0.3rem 0.9rem;
+    color: var(--color-faint);
+    font-style: italic;
+  }
+
+  .prose table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  .prose th, .prose td {
+    border-bottom: 1px solid var(--color-line);
+    padding: 0.5rem 0.6rem;
+    text-align: left;
+  }
+  .prose th { color: var(--color-ink); font-weight: 600; }
+}
+
+@layer components {
+
+  /* ── Problem / Solution / Improvement rail ─────────────────────────
+     A single vertical line threads the three steps so they read as one
+     argument. Problem and Solution get no panel: boxing them was tried and
+     flattened the hierarchy, because once all three are in a container the
+     Improvement container stops meaning anything. They sit on --ink so they
+     stay easy to read, and the Improvement keeps the tint, the accent edge
+     and the stat tiles. */
+
+  .psi-rail {
+    position: relative;
+    margin: 0;
+    padding: 0 0 0 1.4rem;
+    list-style: none;
+  }
+
+  .psi-step {
+    position: relative;
+    padding-bottom: 1.15rem;
+  }
+
+  .psi-step:last-child {
+    padding-bottom: 0;
+  }
+
+  /* Each step draws its own connector down to the next dot, so the rail
+     terminates at the final dot instead of running past it. Masking the tail
+     would not work here: these cards sit on --color-surface, not --color-bg. */
+  .psi-step:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    left: -0.98rem;
+    top: 0.95rem;
+    bottom: 0.1rem;
+    width: 1px;
+    background: var(--color-line);
+  }
+
+  .psi-dot {
+    position: absolute;
+    left: -1.25rem;
+    top: 0.3rem;
+    width: 0.55rem;
+    height: 0.55rem;
+    border: 1px solid var(--color-line);
+    border-radius: 9999px;
+    background: var(--color-surface);
+  }
+
+  .psi-dot--filled {
+    border-color: var(--color-accent-bright);
+    background: var(--color-accent-bright);
+  }
+
+  .psi-label {
+    margin-bottom: 0.3rem;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .psi-label--accent {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  .psi-text {
+    margin: 0;
+    font-size: 0.925rem;
+    line-height: 1.7;
+    color: var(--color-ink);
+  }
+
+  .psi-outcome {
+    border-left: 2px solid var(--color-accent-bright);
+    border-radius: 0 8px 8px 0;
+    background: var(--color-accent-soft);
+    padding: 0.85rem 1rem;
+  }
+
+  /* KPI row: the headline figures, lifted out of the prose below them. */
+  .psi-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2rem;
+    margin: 0 0 0.75rem;
+    padding: 0 0 0.75rem;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .psi-stat { min-width: 0; }
+
+  .psi-stat__value {
+    display: flex;
+    align-items: baseline;
+    gap: 0.15rem;
+    /* Body sans, proportional figures: tabular widths look loose at this size
+       and belong in columns of numbers, not standalone values. */
+    font-family: var(--font-sans);
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--color-accent);
+  }
+
+  .psi-stat__arrow {
+    font-size: 0.95rem;
+    font-weight: 500;
+    opacity: 0.75;
+  }
+
+  .psi-stat__label {
+    margin-top: 0.2rem;
+    max-width: 16rem;
+    font-size: 0.74rem;
+    line-height: 1.4;
+    color: var(--color-muted);
+  }
+
+  .psi-outcome__text {
+    margin: 0;
+    font-size: 0.925rem;
+    line-height: 1.65;
+    font-weight: 500;
+    color: var(--color-ink);
+  }
+
+  /* ── sidebar rail ──────────────────────────────────────────────────
+     The rail only scrolls when its content outruns the viewport, and the
+     scrollbar stays invisible until the pointer is actually over it. A
+     permanent chunky track beside the profile reads as a layout bug. */
+
+  .sidebar-rail {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    transition: scrollbar-color 0.2s ease;
+  }
+
+  .sidebar-rail:hover,
+  .sidebar-rail:focus-within {
+    scrollbar-color: var(--color-line) transparent;
+  }
+
+  .sidebar-rail::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .sidebar-rail::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .sidebar-rail::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background: transparent;
+    transition: background 0.2s ease;
+  }
+
+  .sidebar-rail:hover::-webkit-scrollbar-thumb,
+  .sidebar-rail:focus-within::-webkit-scrollbar-thumb {
+    background: var(--color-line);
+  }
+
+  .sidebar-rail::-webkit-scrollbar-thumb:hover {
+    background: var(--color-faint);
+  }
+
+  /* ── sidebar scroll spy ── */
+
+  .spy-link[data-active="true"] {
+    color: var(--color-accent);
+    border-left-color: var(--color-accent-bright);
+  }
+}
+
+@layer components {
+
+  /* ── award carousel ────────────────────────────────────────────────
+     The photo fills the slide and the award text sits over its lower edge on
+     a gradient scrim. The scrim, not a theme token, is what makes the text
+     legible: it is over a photograph, so the contrast has to be built rather
+     than inherited. Same treatment in both themes, deliberately. */
+
+  .carousel__track {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    border-radius: 8px;
+  }
+
+  .carousel__track::-webkit-scrollbar { display: none; }
+
+  .carousel__track:focus-visible {
+    outline: 2px solid var(--color-accent-bright);
+    outline-offset: 3px;
+  }
+
+  .carousel__slide {
+    position: relative;
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: 8px;
+    background: var(--color-surface-2);
+  }
+
+  .carousel__photo {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2 / 1;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .carousel__overlay {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    /* Generous top padding so the gradient has room to fade out rather than
+       ending on a visible edge. */
+    padding: 5rem 1.75rem 1.5rem;
+    background: linear-gradient(
+      to top,
+      rgb(10 9 7 / 0.95) 0%,
+      rgb(10 9 7 / 0.9) 40%,
+      rgb(10 9 7 / 0.65) 68%,
+      rgb(10 9 7 / 0.25) 86%,
+      rgb(10 9 7 / 0) 100%
+    );
+  }
+
+  .carousel__heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+  }
+
+  .carousel__title {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: #fff;
+  }
+
+  .carousel__date {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: rgb(255 255 255 / 0.7);
+  }
+
+  .carousel__event {
+    margin-top: 0.3rem;
+    font-size: 0.85rem;
+    color: rgb(255 255 255 / 0.78);
+  }
+
+  .carousel__detail {
+    margin-top: 0.6rem;
+    max-width: 60rem;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: rgb(255 255 255 / 0.9);
+  }
+
+  /* Narrow screens: a 2:1 band leaves no room for the text, so give the photo
+     more height and let the scrim take a larger share of it. */
+  @media (max-width: 640px) {
+    .carousel__photo { aspect-ratio: 3 / 4; }
+    .carousel__overlay { padding: 4rem 1.1rem 1.1rem; }
+    .carousel__title { font-size: 1.15rem; }
+  }
+
+  .carousel__controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.75rem;
+  }
+
+  .carousel__dots { display: flex; gap: 0.4rem; }
+
+  .carousel__dot {
+    width: 1.4rem;
+    height: 0.25rem;
+    border: 0;
+    border-radius: 9999px;
+    background: var(--color-line);
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .carousel__dot[aria-current="true"] { background: var(--color-accent-bright); }
+  .carousel__dot:hover { background: var(--color-faint); }
+
+  .carousel__arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.9rem;
+    height: 1.9rem;
+    border: 1px solid var(--color-line);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--color-muted);
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .carousel__arrow:hover:not(:disabled) {
+    color: var(--color-accent);
+    border-color: var(--color-accent-bright);
+  }
+
+  .carousel__arrow:disabled { opacity: 0.35; cursor: default; }
+}
+
+@layer components {
+
+  /* The About lead line, kept to a single line on desktop.
+     The content column is roughly (100vw - 360px) once the sidebar, gap and
+     gutters are taken out, and the sentence needs about 0.0275 x that width to
+     fit. 2.65vw - 9.5px stays just under it at every desktop size and caps at
+     2rem once the container stops growing. Below lg there is no sidebar and
+     the floor takes over, so it wraps on mobile as it should. */
+  .lead-line {
+    font-size: clamp(1.3rem, calc(2.65vw - 9.5px), 2rem);
+  }
+}

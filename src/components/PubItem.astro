@@ -1,0 +1,54 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  title: string;
+  venue: string;
+  venueShort: string;
+  authors: readonly string[];
+  self: string;
+  url?: string;
+  abstract: string;
+}
+
+const { title, venue, venueShort, authors, self, url, abstract } = Astro.props;
+---
+
+<article class="rounded-lg border border-line bg-surface p-5">
+  <div class="mb-2 flex items-center gap-2">
+    <span
+      class="rounded bg-accent-soft px-1.5 py-0.5 font-mono text-[0.68rem] font-medium text-accent"
+    >
+      {venueShort}
+    </span>
+    {
+      url && (
+        <a
+          href={url}
+          rel="noopener"
+          class="inline-flex items-center gap-1 text-xs text-muted hover:text-accent"
+        >
+          View paper
+          <Icon name="external" size={11} />
+        </a>
+      )
+    }
+  </div>
+
+  <h3 class="text-lg font-semibold leading-snug">{title}</h3>
+
+  <p class="mt-1.5 text-sm text-muted">
+    {
+      authors.map((a, i) => (
+        <>
+          {i > 0 && ', '}
+          {a === self ? <strong class="font-medium text-ink">{a}</strong> : a}
+        </>
+      ))
+    }
+  </p>
+
+  <p class="mt-0.5 text-sm italic text-faint">{venue}</p>
+
+  <p class="mt-3 text-sm leading-relaxed text-muted">{abstract}</p>
+</article>

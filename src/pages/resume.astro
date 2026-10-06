@@ -1,0 +1,87 @@
+---
+import { statSync } from 'node:fs';
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { SITE } from '../data/site';
+
+// Read the real mtime at build time instead of hardcoding a date that goes
+// stale (the previous site claimed "Last updated March 2026" indefinitely).
+let updated = '';
+try {
+  updated = statSync(`./public${SITE.resumePath}`).mtime.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+  });
+} catch {
+  updated = '';
+}
+---
+
+<Base
+  title="Resume"
+  description={`Resume of ${SITE.name} - MS Applied Machine Learning, University of Maryland.`}
+>
+  <div class="py-10 sm:py-14">
+    <div
+      class="mb-6 flex flex-wrap items-end justify-between gap-4 border-b border-line pb-4"
+    >
+      <div>
+        <p
+          class="mb-1.5 font-mono text-[0.68rem] uppercase tracking-[0.14em] text-accent-bright"
+        >
+          {updated ? `Updated ${updated}` : 'Resume'}
+        </p>
+        <h1 class="text-2xl font-bold sm:text-3xl">Resume</h1>
+        <p class="mt-1 text-sm text-muted">{SITE.name} &middot; {SITE.email}</p>
+      </div>
+
+      <div class="flex flex-wrap gap-2.5">
+        <a
+          href={SITE.resumePath}
+          download
+          class="inline-flex items-center gap-2 rounded-md bg-ink px-4 py-2 text-sm font-medium text-bg no-underline transition-opacity hover:opacity-90 hover:no-underline"
+        >
+          <Icon name="download" size={15} />
+          Download PDF
+        </a>
+        <a
+          href={SITE.resumePath}
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center gap-2 rounded-md border border-line px-4 py-2 text-sm font-medium text-ink no-underline transition-colors hover:border-accent-bright hover:bg-accent-soft hover:text-accent hover:no-underline"
+        >
+          <Icon name="external" size={15} />
+          Open in new tab
+        </a>
+      </div>
+    </div>
+
+    {/* <object> renders its children when the PDF cannot be displayed, which
+        works where the old iframe "error" listener did not. */}
+    <div class="overflow-hidden rounded-lg border border-line bg-surface-2">
+      <object
+        data={SITE.resumePath}
+        type="application/pdf"
+        title={`${SITE.name} - Resume`}
+        class="block h-[85vh] max-h-[1100px] w-full"
+      >
+        <div class="px-6 py-14 text-center">
+          <p class="mx-auto mb-1 flex justify-center text-faint">
+            <Icon name="file" size={40} />
+          </p>
+          <p class="mb-5 text-sm text-muted">
+            Your browser cannot display the PDF inline.
+          </p>
+          <a
+            href={SITE.resumePath}
+            download
+            class="inline-flex items-center gap-2 rounded-md bg-ink px-4 py-2 text-sm font-medium text-bg no-underline hover:no-underline"
+          >
+            <Icon name="download" size={15} />
+            Download the PDF
+          </a>
+        </div>
+      </object>
+    </div>
+  </div>
+</Base>

@@ -1,0 +1,215 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Section from '../components/Section.astro';
+import EntryCard from '../components/EntryCard.astro';
+import PubItem from '../components/PubItem.astro';
+import SkillStack from '../components/SkillStack.astro';
+import OrgLogo from '../components/OrgLogo.astro';
+import Carousel from '../components/Carousel.astro';
+import { buildSkillUsage } from '../lib/skill-usage';
+import {
+  SITE,
+  ABOUT,
+  FOCUS,
+  AVAILABILITY,
+  ABOUT_CLOSER,
+  SKILLS,
+  STACK_LAYERS,
+  EDUCATION,
+  AWARDS,
+  CERTIFICATIONS,
+} from '../data/site';
+
+const experience = (await getCollection('experience')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
+const allProjects = (await getCollection('projects')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+const featured = allProjects.filter((p) => p.data.featured);
+
+const publications = (await getCollection('publications')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
+// Where each skill was actually used, derived from the stacks above so the
+// two can never disagree.
+const skillUsage = buildSkillUsage(SKILLS, [
+  ...experience.map((e) => ({
+    name: e.data.org.replace(/,.*$/, '').replace(/ (LLC|Pvt\. Ltd\.|Technologies)$/, ''),
+    stack: e.data.stack,
+  })),
+  ...allProjects.map((p) => ({ name: p.data.title, stack: p.data.stack })),
+]);
+---
+
+<Base withSidebar>
+  {/* Intro. The sidebar already carries identity, so this states the thesis. */}
+  <section class="pt-2 pb-2 lg:pt-12">
+    <p
+      class="mb-2 font-mono text-[0.72rem] uppercase tracking-[0.16em] text-accent-bright"
+    >
+      About
+    </p>
+    <p class="lead-line font-display leading-snug font-medium text-ink">
+      {SITE.tagline}
+    </p>
+
+    {
+      ABOUT.map((para) => (
+        <p class="mt-4 text-[0.95rem] leading-relaxed text-muted">
+          {para}
+        </p>
+      ))
+    }
+
+    <p class="mt-6 text-[0.95rem] font-medium text-ink">
+      What I am exploring right now:
+    </p>
+
+    <ul class="mt-3 flex flex-col gap-3">
+      {
+        FOCUS.map((area) => (
+          <li class="flex gap-2.5 text-[0.95rem] leading-relaxed text-muted">
+            <span
+              class="mt-[0.6rem] size-1.5 shrink-0 rounded-full bg-accent-bright"
+              aria-hidden="true"
+            />
+            <span>
+              <span class="font-medium text-ink">{area.label}</span>
+              {': '}
+              {area.detail}
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="mt-6 text-[0.95rem] leading-relaxed text-muted">
+      {AVAILABILITY}
+    </p>
+
+    <p class="mt-4 text-[0.95rem] leading-relaxed text-muted">
+      {ABOUT_CLOSER.before}
+      <a href={`mailto:${SITE.email}`}>{ABOUT_CLOSER.link}</a>
+      {ABOUT_CLOSER.after}
+    </p>
+  </section>
+
+  <Section id="work" eyebrow="Experience" title="Work">
+    <div class="flex flex-col gap-4">
+      {
+        experience.map((item) => (
+          <EntryCard
+            title={item.data.role}
+            subtitle={item.data.org}
+            subtitleHref={item.data.orgUrl}
+            logoSlug={item.id}
+            mark={item.data.mark}
+            start={item.data.start}
+            end={item.data.end}
+            current={item.data.current}
+            stack={item.data.stack}
+            segments={item.data.segments}
+          />
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section
+    id="projects"
+    eyebrow="Selected work"
+    title="Projects"
+    linkHref="/projects/"
+    linkLabel="All projects"
+  >
+    <div class="flex flex-col gap-4">
+      {
+        featured.map((p) => (
+          <EntryCard
+            title={p.data.title}
+            subtitle={p.data.tagline}
+            start={p.data.start}
+            end={p.data.end}
+            stack={p.data.stack}
+            segments={p.data.segments}
+            links={p.data.links}
+          />
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section id="publications" eyebrow="Research" title="Publications">
+    <div class="flex flex-col gap-4">
+      {
+        publications.map((pub) => (
+          <PubItem
+            title={pub.data.title}
+            venue={pub.data.venue}
+            venueShort={pub.data.venueShort}
+            authors={pub.data.authors}
+            self={pub.data.self}
+            url={pub.data.url}
+            abstract={pub.data.abstract}
+          />
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section id="skills" eyebrow="Toolkit" title="Tech Stack">
+    <SkillStack layers={STACK_LAYERS} usage={skillUsage} />
+  </Section>
+
+  <Section id="education" eyebrow="Background" title="Education">
+    <div class="flex flex-col gap-4">
+      {
+        EDUCATION.map((e) => (
+          <article class="rounded-lg border border-line bg-surface p-5">
+            <div class="flex flex-wrap items-baseline justify-between gap-x-4">
+              <h3 class="text-lg font-semibold">{e.degree}</h3>
+              <span class="font-mono text-[0.68rem] text-faint">{e.dates}</span>
+            </div>
+            <p class="mt-0.5 text-sm text-muted">{e.school}</p>
+            <p class="mt-1 text-sm text-muted">
+              GPA <span class="font-medium text-ink">{e.gpa}</span>
+            </p>
+            <p class="mt-2 text-sm text-faint">{e.coursework.join(' · ')}</p>
+          </article>
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section id="certifications" eyebrow="Credentials" title="Certifications">
+    <div class="grid gap-4 sm:grid-cols-2">
+      {
+        CERTIFICATIONS.map((c) => (
+          <article class="flex gap-4 rounded-lg border border-line bg-surface p-5">
+            <OrgLogo slug={c.slug} name={c.title} mark={c.mark} size="sm" />
+            <div class="min-w-0">
+              <div class="mb-1 flex flex-wrap items-baseline justify-between gap-x-3">
+                <h3 class="text-lg font-semibold">{c.title}</h3>
+                {c.date && (
+                  <span class="shrink-0 font-mono text-[0.68rem] text-faint">
+                    {c.date}
+                  </span>
+                )}
+              </div>
+              <p class="mb-1.5 text-sm text-muted">{c.issuer}</p>
+              <p class="text-sm leading-relaxed text-muted">{c.detail}</p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section id="awards" eyebrow="Recognition" title="Awards">
+    <Carousel items={AWARDS} label="Awards" />
+  </Section>
+</Base>

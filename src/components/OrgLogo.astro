@@ -1,0 +1,62 @@
+---
+import { Image } from 'astro:assets';
+
+/**
+ * Organization mark shown to the left of an entry.
+ *
+ * Drop a real logo at `src/assets/logos/<slug>.(svg|png|jpg|webp)` and it is
+ * picked up automatically on the next build. Until then a monogram tile stands
+ * in, so the layout is correct either way and no third-party image is
+ * downloaded without the owner asking for it.
+ */
+interface Props {
+  slug: string;
+  name: string;
+  /** 1-3 characters for the fallback tile. */
+  mark: string;
+  size?: 'md' | 'sm';
+}
+
+const { slug, name, mark, size = 'md' } = Astro.props;
+
+const logos = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/logos/*.{svg,png,jpg,jpeg,webp}',
+  { eager: true },
+);
+
+const match = Object.entries(logos).find(
+  ([path]) => path.split('/').pop()?.replace(/\.\w+$/, '') === slug,
+);
+
+const box = size === 'sm' ? 'size-9' : 'size-11';
+const type = mark.length > 2 ? 'text-[0.6rem]' : 'text-[0.82rem]';
+---
+
+<div
+  class:list={[
+    box,
+    'flex shrink-0 items-center justify-center overflow-hidden rounded-lg border border-line bg-tile',
+  ]}
+>
+  {
+    match ? (
+      <Image
+        src={match[1].default}
+        alt={`${name} logo`}
+        width={96}
+        height={96}
+        class="size-full object-contain p-1.5"
+      />
+    ) : (
+      <span
+        class:list={[
+          type,
+          'font-mono font-semibold uppercase tracking-tight text-tile-ink',
+        ]}
+        aria-hidden="true"
+      >
+        {mark}
+      </span>
+    )
+  }
+</div>

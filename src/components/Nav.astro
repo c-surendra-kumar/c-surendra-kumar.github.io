@@ -1,0 +1,115 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+import Icon from './Icon.astro';
+import { SITE, NAV_LINKS } from '../data/site';
+
+const path = Astro.url.pathname;
+
+// A section anchor is only "current" in the page sense when you are on the
+// page that holds it; which section you are in is the scroll spy's job.
+const isActive = (href: string) =>
+  href.includes('#') ? false : path === href || (href !== '/' && path.startsWith(href));
+---
+
+<header
+  class="sticky top-0 z-40 border-b border-line bg-bg/85 backdrop-blur-md supports-[backdrop-filter]:bg-bg/70"
+>
+  <nav
+    class="mx-auto flex h-14 w-full max-w-[100rem] items-center gap-3 px-4 sm:px-6"
+    aria-label="Main"
+  >
+    <a
+      href="/"
+      class="mr-auto font-display text-xl font-semibold tracking-[-0.01em] text-ink no-underline hover:no-underline sm:text-[1.4rem]"
+    >
+      {SITE.shortName}
+    </a>
+
+    {/* Desktop links */}
+    <ul class="hidden items-center gap-0.5 md:flex">
+      {
+        NAV_LINKS.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              data-spy={link.spy ?? undefined}
+              aria-current={isActive(link.href) ? 'page' : undefined}
+              class:list={[
+                'spy-link rounded-md px-2.5 py-1.5 text-sm no-underline transition-colors hover:bg-accent-soft hover:text-accent hover:no-underline',
+                isActive(link.href) ? 'text-accent' : 'text-muted',
+              ]}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <ThemeToggle />
+
+    {/* Mobile menu button. The previous site hid its nav entirely below 768px
+        with no replacement, leaving phone visitors no way to navigate. */}
+    <button
+      type="button"
+      id="nav-toggle"
+      class="inline-flex size-9 items-center justify-center rounded-md border border-line text-muted transition-colors hover:border-accent-bright hover:text-accent md:hidden"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="mobile-nav"
+    >
+      <Icon name="menu" size={18} />
+    </button>
+  </nav>
+
+  <div
+    id="mobile-nav"
+    class="hidden border-t border-line bg-bg md:hidden"
+  >
+    <ul class="mx-auto flex w-full max-w-[100rem] flex-col px-4 py-2 sm:px-6">
+      {
+        NAV_LINKS.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              aria-current={isActive(link.href) ? 'page' : undefined}
+              class:list={[
+                'block border-b border-line/60 py-3 text-sm no-underline last:border-0 hover:text-accent hover:no-underline',
+                isActive(link.href) ? 'text-accent' : 'text-ink',
+              ]}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById('nav-toggle');
+  const panel = document.getElementById('mobile-nav');
+
+  const setOpen = (open: boolean) => {
+    panel?.classList.toggle('hidden', !open);
+    toggle?.setAttribute('aria-expanded', String(open));
+    toggle?.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  };
+
+  toggle?.addEventListener('click', () => {
+    setOpen(panel?.classList.contains('hidden') ?? false);
+  });
+
+  // Close on navigation to a same-page anchor, and on Escape.
+  panel?.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).tagName === 'A') setOpen(false);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !panel?.classList.contains('hidden')) {
+      setOpen(false);
+      toggle?.focus();
+    }
+  });
+</script>
